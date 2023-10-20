@@ -1,0 +1,31 @@
+{
+  "name": "busca_job",
+  "version": "1.0.0",
+  "description": "Uma aplicação para cadastro de vagas de emprego",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "dev",
+    "jobs",
+    "dev",
+    "oportunity",
+    "jobs",
+    "dev"
+  ],
+  "author": "Leonardo Belizario",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "mysql2": "^3.6.2",
+    "pg": "^8.11.3",
+    "sequelize": "^6.33.0",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
