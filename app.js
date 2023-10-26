@@ -1,6 +1,8 @@
 const express = require("express");
-let PORT = 3030;
-let app = express();
+const PORT = 3030;
+const app = express();
+const path = require("path");
+const { engine } = require("express-handlebars");
 const bodyParser = require("body-parser");
 
 app.listen(PORT, () => {
@@ -10,9 +12,17 @@ app.listen(PORT, () => {
 //body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//handlebars
+app.set("views", path.join(__dirname, "views"));
+app.engine("handlebars", engine({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+//static folder
+app.use(express.static(path.join(__dirname, "public")));
+
 //routes
 app.get("/", (req, res) => {
-  res.send("Esta rodando mesmo 123 !");
+  res.render("index");
 });
 
 //jobs routes
