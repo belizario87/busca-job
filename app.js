@@ -4,10 +4,13 @@ const app = express();
 const path = require("path");
 const { engine } = require("express-handlebars");
 const bodyParser = require("body-parser");
-const job = require("./models/Job");
+const job = require("./models/job");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
+const portApp = 3030;
 
-app.listen(PORT, () => {
-  console.log("Server rodando na porta: " + PORT);
+app.listen(portApp, () => {
+  console.log(`The app is listening on port ${portApp}`);
 });
 
 //body parser
@@ -23,11 +26,31 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //routes
 app.get("/", (req, res) => {
-  Job.findAll({ order: [["createdAt", "DESC"]] }).then((jobs) => {
-    res.render("index", {
-      jobs,
-    });
-  });
+  let search = req.query.job;
+  let query = "%" + search + "%";
+
+  if (!search) {
+    job
+      .findAll({ order: [["createdAt", "DESC"]] })
+      .then((jobs) => {
+        res.render("index", { jobs });
+      })
+      .catch((error) => {
+        console.log(`An error occurs: ${error}`);
+      });
+  } else {
+    job
+      .findAll({
+        where: { title: { [Op.like]: query } },
+        order: [["createdAt", "DESC"]],
+      })
+      .then((jobs) => {
+        res.render("index", { jobs, search });
+      })
+      .catch((error) => {
+        console.log(`An error occurs: ${error}`);
+      });
+  }
 });
 
 //jobs routes
