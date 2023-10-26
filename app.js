@@ -4,6 +4,7 @@ const app = express();
 const path = require("path");
 const { engine } = require("express-handlebars");
 const bodyParser = require("body-parser");
+const job = require("./models/Job");
 
 app.listen(PORT, () => {
   console.log("Server rodando na porta: " + PORT);
@@ -22,7 +23,11 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //routes
 app.get("/", (req, res) => {
-  res.render("index");
+  Job.findAll({ order: [["createdAt", "DESC"]] }).then((jobs) => {
+    res.render("index", {
+      jobs,
+    });
+  });
 });
 
 //jobs routes
